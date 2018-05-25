@@ -1,0 +1,5 @@
+Change Component Footprint: Designator=R5 Old Footprint=6-0805_M New Footprint=6-0805_N
+Added Room: Name=IO
+Added Room: Name=Main
+Added Room: Name=POWER
+Added Room: Name=USART

@@ -1,0 +1,13 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [DoorController.PrjPCB]
+   Generated File[DoorController_DM-045_V03.TXT]
+   Generated File[DoorController_DM-045_V03.DRL]
+   Generated File[DoorController_DM-045_V03.LDP]
+   Generated File[DoorController_DM-045_V03.DRR]
+
+
+Files Generated   : 4
+Documents Printed : 0
+
+Finished Output Generation At 16:44:14 On 24.08.2015

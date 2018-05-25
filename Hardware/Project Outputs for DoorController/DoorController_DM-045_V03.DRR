@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+NCDrill File Report For: DoorController_DM-045_V03.PcbDoc   24.08.2015  16:44:14
+---------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : DoorController_DM-045_V03.TXT
+EIA File   : DoorController_DM-045_V03.DRL
+
+Tool         Hole Size           Hole Type     Hole Count Plated       Tool Travel
+---------------------------------------------------------------------------
+T1        0.7mm (27.559mil)        Round          243              8252.43 mm (324.90 Inch)
+T2        0.7112mm (28mil)         Round          2                7246.71 mm (285.30 Inch)
+T3        0.8mm (31.496mil)        Round          5                7231.78 mm (284.72 Inch)
+T4        0.9mm (35.433mil)        Round          30               7373.97 mm (290.31 Inch)
+T5        1mm (39.37mil)           Round          2                7227.53 mm (284.55 Inch)
+T6        1.5mm (59.055mil)        Round          13               7386.87 mm (290.82 Inch)
+T7        8mm (314.961mil)         Round          4                7574.92 mm (298.23 Inch)
+---------------------------------------------------------------------------
+Totals                                            299              52294.20 mm (2058.83 Inch)
+
+Total Processing Time (hh:mm:ss) : 00:00:00

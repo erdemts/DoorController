@@ -1,0 +1,12 @@
+Removed Pin From Net: NetName=NetU6_1 Pin=U8-9
+Removed Pin From Net: NetName=NetU6_44 Pin=U8-10
+Added Pin To Net: NetName=NetU6_44 Pin=U8-11
+Added Pin To Net: NetName=NetU6_1 Pin=U8-12
+Added Pin To Net: NetName=NetU8_13 Pin=U8-13
+Added Net: Name=NetU8_13
+Added Pin To Net: NetName=NetU8_14 Pin=U8-14
+Added Net: Name=NetU8_14
+Added Room: Name=IO
+Added Room: Name=Main
+Added Room: Name=POWER
+Added Room: Name=USART

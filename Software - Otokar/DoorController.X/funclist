@@ -1,0 +1,10 @@
+_vInitializeUart: CODE, 347 0 23
+i1_putch: CODE, 188 0 8
+_putch: CODE, 381 0 6
+_vCheckError: CODE, 179 0 9
+_main: CODE, 202 0 100
+_erdem: CODE, 15 0 150
+_vInitializeBoard: CODE, 302 0 45
+_vDelay: CODE, 165 0 14
+_setTimeOut: CODE, 387 0 5
+Total: 360

@@ -1,0 +1,1439 @@
+
+
+HI-TECH Software PIC PRO Macro Assembler V9.83 build 10920 
+                                                                                               Tue Mar 15 14:12:13 2016
+
+HI-TECH Software Omniscient Code Generator (PRO mode) build 10920
+     1                           	processor	16F887
+     2                           	opt	pw 120
+     3                           	opt	pm
+     4                           	psect	config,global,class=CONFIG,delta=2
+     5                           	psect	nvBANK0,global,class=BANK0,space=1,delta=1
+     6                           	psect	cinit,global,class=CODE,delta=2
+     7                           	psect	bitbssCOMMON,global,bit,class=COMMON,space=1,delta=1
+     8                           	psect	bssCOMMON,global,class=COMMON,space=1,delta=1
+     9                           	psect	bssBANK0,global,class=BANK0,space=1,delta=1
+    10                           	psect	cstackCOMMON,global,class=COMMON,space=1,delta=1
+    11                           	psect	cstackBANK0,global,class=BANK0,space=1,delta=1
+    12                           	psect	maintext,global,class=CODE,delta=2
+    13                           	psect	text185,local,class=CODE,delta=2
+    14                           	psect	text186,local,class=CODE,delta=2
+    15                           	psect	text187,local,class=CODE,delta=2
+    16                           	psect	text188,local,class=CODE,delta=2
+    17                           	psect	text189,local,class=CODE,delta=2
+    18                           	psect	intentry,global,class=CODE,delta=2
+    19                           	psect	text193,local,class=CODE,delta=2
+    20                           	psect	pa_nodes,global,class=CODE,delta=2
+    21                           	dabs	1,0x7E,2
+    22  000A                     	;#
+    23                           
+    24                           	psect	config
+    25  2007  E32C               	dw	58156	;#
+    26                           
+    27                           	psect	nvBANK0
+    28  0024                     __pnvBANK0:	
+    29  0024                     _doorStates:	
+    30  0024                     	ds	1
+    31  0005                     _PORTA	set	5
+    32  0006                     _PORTB	set	6
+    33  0007                     _PORTC	set	7
+    34  0008                     _PORTD	set	8
+    35  0008                     _PORTDbits	set	8
+    36  0009                     _PORTE	set	9
+    37  001A                     _RCREG	set	26
+    38  0019                     _TXREG	set	25
+    39  00C3                     _ADDEN	set	195
+    40  00C4                     _CREN	set	196
+    41  00C2                     _FERR	set	194
+    42  005F                     _GIE	set	95
+    43  00C1                     _OERR	set	193
+    44  005E                     _PEIE	set	94
+    45  005B                     _RBIE	set	91
+    46  0058                     _RBIF	set	88
+    47  0065                     _RCIF	set	101
+    48  00C6                     _RX9	set	198
+    49  00C7                     _SPEN	set	199
+    50  005D                     _T0IE	set	93
+    51  005A                     _T0IF	set	90
+    52  0064                     _TXIF	set	100
+    53  0096                     _IOCB	set	150
+    54  0081                     _OPTION_REG	set	129
+    55  008F                     _OSCCON	set	143
+    56  0099                     _SPBRG	set	153
+    57  0085                     _TRISA	set	133
+    58  0086                     _TRISB	set	134
+    59  0087                     _TRISC	set	135
+    60  0087                     _TRISCbits	set	135
+    61  0088                     _TRISD	set	136
+    62  0089                     _TRISE	set	137
+    63  04C2                     _BRGH	set	1218
+    64  0465                     _RCIE	set	1125
+    65  04C4                     _SYNC	set	1220
+    66  04C6                     _TX9	set	1222
+    67  04C5                     _TXEN	set	1221
+    68  0464                     _TXIE	set	1124
+    69  0107                     _CM1CON0	set	263
+    70  0108                     _CM2CON0	set	264
+    71  0105                     _WDTCON	set	261
+    72  083F                     _C1ON	set	2111
+    73  0847                     _C2ON	set	2119
+    74  0188                     _ANSEL	set	392
+    75  0189                     _ANSELH	set	393
+    76  0C3B                     _BRG16	set	3131
+    77                           
+    78                           	psect	cinit
+    79  0172                     start_initialization:	
+    80                           
+    81                           ; Clear objects allocated to BITCOMMON
+    82  0172  01FB               	clrf	(__pbitbssCOMMON/(0+8))& (0+127)
+    83                           
+    84                           ; Clear objects allocated to COMMON
+    85  0173  01F7               	clrf	__pbssCOMMON& (0+127)
+    86  0174  01F8               	clrf	(__pbssCOMMON+1)& (0+127)
+    87  0175  01F9               	clrf	(__pbssCOMMON+2)& (0+127)
+    88  0176  01FA               	clrf	(__pbssCOMMON+3)& (0+127)
+    89                           
+    90                           ; Clear objects allocated to BANK0
+    91  0177  01A0               	clrf	__pbssBANK0& (0+127)
+    92  0178  01A1               	clrf	(__pbssBANK0+1)& (0+127)
+    93  0179                     end_of_initialization:	
+    94                           ;End of C runtime variable initialization code
+    95                           
+    96  0179  0183               	clrf	3
+    97  017A  120A  118A  28CA   	ljmp	_main	;jump to C main() function
+    98                           
+    99                           	psect	bitbssCOMMON
+   100  03D8                     __pbitbssCOMMON:	
+   101  03D8                     _timeOutFlag:	
+   102  03D8                     	ds	1
+   103                           
+   104                           	psect	bssCOMMON
+   105  0077                     __pbssCOMMON:	
+   106  0077                     _ackComplated:	
+   107  0077                     	ds	1
+   108  0078                     _tick250ms:	
+   109  0078                     	ds	1
+   110  0079                     _timeOutCounter:	
+   111  0079                     	ds	1
+   112  007A                     _timeOutTimer:	
+   113  007A                     	ds	1
+   114                           
+   115                           	psect	bssBANK0
+   116  0020                     __pbssBANK0:	
+   117  0020                     _doorStatesChanged:	
+   118  0020                     	ds	1
+   119  0021                     _uartState:	
+   120  0021                     	ds	1
+   121                           
+   122                           	psect	cstackCOMMON
+   123  0070                     __pcstackCOMMON:	
+   124  0070                     ?_vInitializeBoard:	
+   125  0070                     ?_vInitializeUart:	
+   126                           ; 0 bytes @ 0x0
+   127                           
+   128  0070                     ?_setTimeOut:	
+   129                           ; 0 bytes @ 0x0
+   130                           
+   131  0070                     ?_putch:	
+   132                           ; 0 bytes @ 0x0
+   133                           
+   134  0070                     ?_vDelay:	
+   135                           ; 0 bytes @ 0x0
+   136                           
+   137  0070                     ??_vDelay:	
+   138                           ; 0 bytes @ 0x0
+   139                           
+   140  0070                     ?_vCheckError:	
+   141                           ; 0 bytes @ 0x0
+   142                           
+   143  0070                     ??_vCheckError:	
+   144                           ; 0 bytes @ 0x0
+   145                           
+   146  0070                     ?_erdem:	
+   147                           ; 0 bytes @ 0x0
+   148                           
+   149  0070                     ?i1_putch:	
+   150                           ; 0 bytes @ 0x0
+   151                           
+   152  0070                     ??i1_putch:	
+   153                           ; 0 bytes @ 0x0
+   154                           
+   155  0070                     ?_main:	
+   156                           ; 0 bytes @ 0x0
+   157                           
+   158  0070                     i1putch@c:	
+   159                           ; 2 bytes @ 0x0
+   160                           
+   161  0070                     vDelay@i:	
+   162                           ; 1 bytes @ 0x0
+   163                           
+   164                           
+   165                           ; 2 bytes @ 0x0
+   166  0070                     	ds	2
+   167  0072                     ??_erdem:	
+   168                           
+   169                           ; 0 bytes @ 0x2
+   170  0072                     	ds	4
+   171  0076                     erdem@temp:	
+   172                           
+   173                           ; 1 bytes @ 0x6
+   174  0076                     	ds	1
+   175                           
+   176                           	psect	cstackBANK0
+   177  0022                     __pcstackBANK0:	
+   178  0022                     ??_vInitializeBoard:	
+   179  0022                     ??_vInitializeUart:	
+   180                           ; 0 bytes @ 0x0
+   181                           
+   182  0022                     ??_setTimeOut:	
+   183                           ; 0 bytes @ 0x0
+   184                           
+   185  0022                     ??_putch:	
+   186                           ; 0 bytes @ 0x0
+   187                           
+   188  0022                     setTimeOut@timeOut:	
+   189                           ; 0 bytes @ 0x0
+   190                           
+   191  0022                     putch@c:	
+   192                           ; 1 bytes @ 0x0
+   193                           
+   194                           
+   195                           ; 1 bytes @ 0x0
+   196  0022                     	ds	1
+   197  0023                     ??_main:	
+   198                           
+   199                           ; 0 bytes @ 0x1
+   200  0023                     	ds	1
+   201                           
+   202                           	psect	maintext
+   203  00CA                     __pmaintext:	
+   204 ;;Data sizes: Strings 0, constant 0, data 0, bss 6, persistent 1 stack 0
+   205 ;;Auto spaces:   Size  Autos    Used
+   206 ;; COMMON          14      7      12
+   207 ;; BANK0           80      2       5
+   208 ;; BANK1           80      0       0
+   209 ;; BANK3           96      0       0
+   210 ;; BANK2           96      0       0
+   211 ;;
+   212 ;; Pointer list with targets:
+   213 ;;
+   214 ;; Critical Paths under _main in COMMON
+   215 ;;
+   216 ;;   None.
+   217 ;;
+   218 ;; Critical Paths under _erdem in COMMON
+   219 ;;
+   220 ;;   _erdem->_vDelay
+   221 ;;
+   222 ;; Critical Paths under _main in BANK0
+   223 ;;
+   224 ;;   _main->_vInitializeUart
+   225 ;;   _main->_setTimeOut
+   226 ;;   _main->_putch
+   227 ;;
+   228 ;; Critical Paths under _erdem in BANK0
+   229 ;;
+   230 ;;   None.
+   231 ;;
+   232 ;; Critical Paths under _main in BANK1
+   233 ;;
+   234 ;;   None.
+   235 ;;
+   236 ;; Critical Paths under _erdem in BANK1
+   237 ;;
+   238 ;;   None.
+   239 ;;
+   240 ;; Critical Paths under _main in BANK3
+   241 ;;
+   242 ;;   None.
+   243 ;;
+   244 ;; Critical Paths under _erdem in BANK3
+   245 ;;
+   246 ;;   None.
+   247 ;;
+   248 ;; Critical Paths under _main in BANK2
+   249 ;;
+   250 ;;   None.
+   251 ;;
+   252 ;; Critical Paths under _erdem in BANK2
+   253 ;;
+   254 ;;   None.
+   255 ;;
+   256 ;;Main: autosize = 0, tempsize = 1, incstack = 0, save=0
+   257 ;;
+   258 ;;
+   259 ;;Call Graph Tables:
+   260 ;;
+   261 ;; ---------------------------------------------------------------------------------
+   262 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+   263 ;; ---------------------------------------------------------------------------------
+   264 ;; (0) _main                                                 2     2      0     133
+   265 ;;                                              1 BANK0      1     1      0
+   266 ;;                   _vInitializeBoard
+   267 ;;                    _vInitializeUart
+   268 ;;                         _setTimeOut
+   269 ;;                              _putch
+   270 ;; ---------------------------------------------------------------------------------
+   271 ;; (1) _putch                                                1     1      0      22
+   272 ;;                                              0 BANK0      1     1      0
+   273 ;; ---------------------------------------------------------------------------------
+   274 ;; (1) _setTimeOut                                           1     1      0      22
+   275 ;;                                              0 BANK0      1     1      0
+   276 ;; ---------------------------------------------------------------------------------
+   277 ;; (1) _vInitializeUart                                      1     1      0      89
+   278 ;;                                              0 BANK0      1     1      0
+   279 ;; ---------------------------------------------------------------------------------
+   280 ;; (1) _vInitializeBoard                                     0     0      0       0
+   281 ;; ---------------------------------------------------------------------------------
+   282 ;; Estimated maximum stack depth 1
+   283 ;; ---------------------------------------------------------------------------------
+   284 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+   285 ;; ---------------------------------------------------------------------------------
+   286 ;; (2) _erdem                                                7     7      0     165
+   287 ;;                                              2 COMMON     5     5      0
+   288 ;;                             _vDelay
+   289 ;;                        _vCheckError
+   290 ;;                            i1_putch
+   291 ;; ---------------------------------------------------------------------------------
+   292 ;; (3) _vDelay                                               2     2      0      46
+   293 ;;                                              0 COMMON     2     2      0
+   294 ;; ---------------------------------------------------------------------------------
+   295 ;; (3) i1_putch                                              1     1      0      73
+   296 ;;                                              0 COMMON     1     1      0
+   297 ;; ---------------------------------------------------------------------------------
+   298 ;; (3) _vCheckError                                          1     1      0       0
+   299 ;; ---------------------------------------------------------------------------------
+   300 ;; Estimated maximum stack depth 3
+   301 ;; ---------------------------------------------------------------------------------
+   302 ;; Call Graph Graphs:
+   303 ;; _main (ROOT)
+   304 ;;   _vInitializeBoard
+   305 ;;   _vInitializeUart
+   306 ;;   _setTimeOut
+   307 ;;   _putch
+   308 ;;
+   309 ;; _erdem (ROOT)
+   310 ;;   _vDelay
+   311 ;;   _vCheckError
+   312 ;;   i1_putch
+   313 ;;
+   314 ;; Address spaces:
+   315 ;;Name               Size   Autos  Total    Cost      Usage
+   316 ;;BITCOMMON            E      0       1       0        7.1%
+   317 ;;EEDATA             100      0       0       0        0.0%
+   318 ;;NULL                 0      0       0       0        0.0%
+   319 ;;CODE                 0      0       0       0        0.0%
+   320 ;;COMMON               E      7       C       1       85.7%
+   321 ;;BITSFR0              0      0       0       1        0.0%
+   322 ;;SFR0                 0      0       0       1        0.0%
+   323 ;;BITSFR1              0      0       0       2        0.0%
+   324 ;;SFR1                 0      0       0       2        0.0%
+   325 ;;STACK                0      0       5       2        0.0%
+   326 ;;ABS                  0      0      11       3        0.0%
+   327 ;;BITBANK0            50      0       0       4        0.0%
+   328 ;;BITSFR3              0      0       0       4        0.0%
+   329 ;;SFR3                 0      0       0       4        0.0%
+   330 ;;BANK0               50      2       5       5        6.3%
+   331 ;;BITSFR2              0      0       0       5        0.0%
+   332 ;;SFR2                 0      0       0       5        0.0%
+   333 ;;BITBANK1            50      0       0       6        0.0%
+   334 ;;BANK1               50      0       0       7        0.0%
+   335 ;;BITBANK3            60      0       0       8        0.0%
+   336 ;;BANK3               60      0       0       9        0.0%
+   337 ;;BITBANK2            60      0       0      10        0.0%
+   338 ;;BANK2               60      0       0      11        0.0%
+   339 ;;DATA                 0      0      16      12        0.0%
+   340                           
+   341                           
+   342 ;; *************** function _main *****************
+   343 ;; Defined at:
+   344 ;;		line 85 in file "../src/main.c"
+   345 ;; Parameters:    Size  Location     Type
+   346 ;;		None
+   347 ;; Auto vars:     Size  Location     Type
+   348 ;;  sayi            1    0        unsigned char 
+   349 ;; Return value:  Size  Location     Type
+   350 ;;                  2  1056[COMMON] int 
+   351 ;; Registers used:
+   352 ;;		wreg, status,2, status,0, pclath, cstack
+   353 ;; Tracked objects:
+   354 ;;		On entry : 17F/0
+   355 ;;		On exit  : 60/0
+   356 ;;		Unchanged: FFE00/0
+   357 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   358 ;;      Params:         0       0       0       0       0
+   359 ;;      Locals:         0       0       0       0       0
+   360 ;;      Temps:          0       1       0       0       0
+   361 ;;      Totals:         0       1       0       0       0
+   362 ;;Total ram usage:        1 bytes
+   363 ;; Hardware stack levels required when called:    3
+   364 ;; This function calls:
+   365 ;;		_vInitializeBoard
+   366 ;;		_vInitializeUart
+   367 ;;		_setTimeOut
+   368 ;;		_putch
+   369 ;; This function is called by:
+   370 ;;		Startup code after reset
+   371 ;; This function uses a non-reentrant model
+   372 ;;
+   373  00CA                     _main:	
+   374                           
+   375                           ;main.c: 87: vInitializeBoard();
+   376                           
+   377                           ; Regs used in _main: [wreg+status,2+status,0+pclath+cstack]
+   378  00CA  120A  118A  212E   	fcall	_vInitializeBoard
+      +       120A  118A         
+   379                           
+   380                           ;main.c: 88: vInitializeUart();
+   381  00CF  120A  118A  215B   	fcall	_vInitializeUart
+      +       120A  118A         
+   382                           
+   383                           ;main.c: 89: PEIE = 1;
+   384  00D4  170B               	bsf	11,6
+   385                           
+   386                           ;main.c: 90: (GIE = 1);
+   387  00D5  178B               	bsf	11,7
+   388                           
+   389                           ;main.c: 91: doorStatesChanged = 0;
+   390  00D6  1283               	bcf	3,5	;RP0=0, select bank0
+   391  00D7  01A0               	clrf	_doorStatesChanged	;volatile
+   392                           
+   393                           ;main.c: 93: (PORTDbits.RD0) = 1;
+   394  00D8  1408               	bsf	8,0	;volatile
+   395  00D9                     l3907:	
+   396  00D9  0064               	clrwdt	;#
+   397                           
+   398                           ;main.c: 100: if(doorStatesChanged == 1)
+   399  00DA  1283               	bcf	3,5	;RP0=0, select bank0
+   400  00DB  1303               	bcf	3,6	;RP1=0, select bank0
+   401  00DC  0B20               	decfsz	_doorStatesChanged,w	;volatile
+   402  00DD  28E3               	goto	l3917
+   403                           
+   404                           ;main.c: 101: {
+   405                           ;main.c: 102: doorStatesChanged = 0;
+   406  00DE  01A0               	clrf	_doorStatesChanged	;volatile
+   407                           
+   408                           ;main.c: 103: uartState = 1;
+   409  00DF  01A1               	clrf	_uartState	;volatile
+   410  00E0  0AA1               	incf	_uartState,f	;volatile
+   411                           
+   412                           ;main.c: 104: (PORTDbits.RD1) ^= 1;
+   413  00E1  3002               	movlw	2
+   414  00E2  0688               	xorwf	8,f	;volatile
+   415  00E3                     l3917:	
+   416                           
+   417                           ;main.c: 105: }
+   418                           ;main.c: 107: if(uartState == 1)
+   419  00E3  0321               	decf	_uartState,w	;volatile
+   420  00E4  1D03               	skipz
+   421  00E5  28D9               	goto	l3907
+   422                           
+   423                           ;main.c: 108: {
+   424                           ;main.c: 111: uartState = 2;
+   425  00E6  3002               	movlw	2
+   426  00E7  00A1               	movwf	_uartState	;volatile
+   427                           
+   428                           ;main.c: 112: setTimeOut(150);
+   429  00E8  3096               	movlw	150
+   430  00E9  120A  118A  2183   	fcall	_setTimeOut
+      +       120A  118A         
+   431                           
+   432                           ;main.c: 121: if(((doorStates>>0)&0x01))
+   433  00EE  1C24               	btfss	_doorStates,0	;volatile
+   434  00EF  28F2               	goto	l3927
+   435                           
+   436                           ;main.c: 122: {
+   437                           ;main.c: 123: putch('0');
+   438  00F0  3030               	movlw	48
+   439  00F1  28F3               	goto	L1
+   440  00F2                     l3927:	
+   441                           ;main.c: 124: }
+   442                           
+   443                           
+   444                           ;main.c: 125: else
+   445                           ;main.c: 126: {
+   446                           ;main.c: 127: putch('1');
+   447  00F2  3031               	movlw	49
+   448  00F3                     L1:	
+   449  00F3  120A  118A  217D   	fcall	_putch
+      +       120A  118A         
+   450                           
+   451                           ;main.c: 128: }
+   452                           ;main.c: 129: if(((doorStates>>1)&0x01))
+   453  00F8  0824               	movf	_doorStates,w	;volatile
+   454  00F9  00A3               	movwf	??_main
+   455  00FA  1003               	clrc
+   456  00FB  0CA3               	rrf	??_main,f
+   457  00FC  1C23               	btfss	??_main,0
+   458  00FD  2900               	goto	l3933
+   459                           
+   460                           ;main.c: 130: {
+   461                           ;main.c: 131: putch('0');
+   462  00FE  3030               	movlw	48
+   463  00FF  2901               	goto	L2
+   464  0100                     l3933:	
+   465                           ;main.c: 132: }
+   466                           
+   467                           
+   468                           ;main.c: 133: else
+   469                           ;main.c: 134: {
+   470                           ;main.c: 135: putch('1');
+   471  0100  3031               	movlw	49
+   472  0101                     L2:	
+   473  0101  120A  118A  217D   	fcall	_putch
+      +       120A  118A         
+   474                           
+   475                           ;main.c: 136: }
+   476                           ;main.c: 137: if(((doorStates>>2)&0x01))
+   477  0106  0824               	movf	_doorStates,w	;volatile
+   478  0107  00A3               	movwf	??_main
+   479  0108  1003               	clrc
+   480  0109  0CA3               	rrf	??_main,f
+   481  010A  1003               	clrc
+   482  010B  0CA3               	rrf	??_main,f
+   483  010C  1C23               	btfss	??_main,0
+   484  010D  2910               	goto	l3939
+   485                           
+   486                           ;main.c: 138: {
+   487                           ;main.c: 139: putch('0');
+   488  010E  3030               	movlw	48
+   489  010F  2911               	goto	L3
+   490  0110                     l3939:	
+   491                           ;main.c: 140: }
+   492                           
+   493                           
+   494                           ;main.c: 141: else
+   495                           ;main.c: 142: {
+   496                           ;main.c: 143: putch('1');
+   497  0110  3031               	movlw	49
+   498  0111                     L3:	
+   499  0111  120A  118A  217D   	fcall	_putch
+      +       120A  118A         
+   500                           
+   501                           ;main.c: 144: }
+   502                           ;main.c: 145: if(((doorStates>>3)&0x01))
+   503  0116  0824               	movf	_doorStates,w	;volatile
+   504  0117  00A3               	movwf	??_main
+   505  0118  1003               	clrc
+   506  0119  0CA3               	rrf	??_main,f
+   507  011A  1003               	clrc
+   508  011B  0CA3               	rrf	??_main,f
+   509  011C  1003               	clrc
+   510  011D  0CA3               	rrf	??_main,f
+   511  011E  1C23               	btfss	??_main,0
+   512  011F  2927               	goto	l3945
+   513                           
+   514                           ;main.c: 146: {
+   515                           ;main.c: 147: putch('0');
+   516  0120  3030               	movlw	48
+   517  0121  120A  118A  217D   	fcall	_putch
+      +       120A  118A         
+   518                           
+   519                           ;main.c: 148: }
+   520  0126  28D9               	goto	l3907
+   521  0127                     l3945:	
+   522                           
+   523                           ;main.c: 149: else
+   524                           ;main.c: 150: {
+   525                           ;main.c: 151: putch('1');
+   526  0127  3031               	movlw	49
+   527  0128  120A  118A  217D   	fcall	_putch
+      +       120A  118A         
+   528  012D  28D9               	goto	l3907
+   529  012E                     __end_of_main:	
+   530                           
+   531                           	psect	text185
+   532  017D                     __ptext185:	
+   533 ;; =============== function _main ends ============
+   534                           
+   535                           
+   536 ;; *************** function _putch *****************
+   537 ;; Defined at:
+   538 ;;		line 122 in file "../src/uart.c"
+   539 ;; Parameters:    Size  Location     Type
+   540 ;;  c               1    wreg     unsigned char 
+   541 ;; Auto vars:     Size  Location     Type
+   542 ;;  c               1    0[BANK0 ] unsigned char 
+   543 ;; Return value:  Size  Location     Type
+   544 ;;		None               void
+   545 ;; Registers used:
+   546 ;;		wreg
+   547 ;; Tracked objects:
+   548 ;;		On entry : 60/0
+   549 ;;		On exit  : 60/0
+   550 ;;		Unchanged: FFF9F/0
+   551 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   552 ;;      Params:         0       0       0       0       0
+   553 ;;      Locals:         0       1       0       0       0
+   554 ;;      Temps:          0       0       0       0       0
+   555 ;;      Totals:         0       1       0       0       0
+   556 ;;Total ram usage:        1 bytes
+   557 ;; Hardware stack levels used:    1
+   558 ;; Hardware stack levels required when called:    2
+   559 ;; This function calls:
+   560 ;;		Nothing
+   561 ;; This function is called by:
+   562 ;;		_main
+   563 ;; This function uses a non-reentrant model
+   564 ;;
+   565  017D                     _putch:	
+   566                           
+   567                           ; Regs used in _putch: [wreg]
+   568                           ;putch@c stored from wreg
+   569  017D  00A2               	movwf	putch@c
+   570  017E                     l2139:	
+   571                           ;uart.c: 123: while( !TXIF )
+   572                           
+   573  017E  1E0C               	btfss	12,4
+   574  017F  297E               	goto	l2139
+   575                           
+   576                           ;uart.c: 125: TXREG = c;
+   577  0180  0822               	movf	putch@c,w
+   578  0181  0099               	movwf	25	;volatile
+   579  0182  0008               	return
+   580  0183                     __end_of_putch:	
+   581                           
+   582                           	psect	text186
+   583  0183                     __ptext186:	
+   584 ;; =============== function _putch ends ============
+   585                           
+   586                           
+   587 ;; *************** function _setTimeOut *****************
+   588 ;; Defined at:
+   589 ;;		line 313 in file "../src/main.c"
+   590 ;; Parameters:    Size  Location     Type
+   591 ;;  timeOut         1    wreg     unsigned char 
+   592 ;; Auto vars:     Size  Location     Type
+   593 ;;  timeOut         1    0[BANK0 ] unsigned char 
+   594 ;; Return value:  Size  Location     Type
+   595 ;;		None               void
+   596 ;; Registers used:
+   597 ;;		wreg, status,2
+   598 ;; Tracked objects:
+   599 ;;		On entry : 60/0
+   600 ;;		On exit  : 60/0
+   601 ;;		Unchanged: FFF9F/0
+   602 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   603 ;;      Params:         0       0       0       0       0
+   604 ;;      Locals:         0       1       0       0       0
+   605 ;;      Temps:          0       0       0       0       0
+   606 ;;      Totals:         0       1       0       0       0
+   607 ;;Total ram usage:        1 bytes
+   608 ;; Hardware stack levels used:    1
+   609 ;; Hardware stack levels required when called:    2
+   610 ;; This function calls:
+   611 ;;		Nothing
+   612 ;; This function is called by:
+   613 ;;		_main
+   614 ;; This function uses a non-reentrant model
+   615 ;;
+   616  0183                     _setTimeOut:	
+   617                           
+   618                           ; Regs used in _setTimeOut: [wreg+status,2]
+   619                           ;setTimeOut@timeOut stored from wreg
+   620  0183  00A2               	movwf	setTimeOut@timeOut
+   621                           
+   622                           ;main.c: 314: timeOutTimer = 0;
+   623  0184  01FA               	clrf	_timeOutTimer	;volatile
+   624                           
+   625                           ;main.c: 315: timeOutCounter = timeOut;
+   626  0185  00F9               	movwf	_timeOutCounter	;volatile
+   627                           
+   628                           ;main.c: 316: timeOutFlag = 1;
+   629  0186  147B               	bsf	_timeOutFlag/(0+8),_timeOutFlag& (0+7)
+   630  0187  0008               	return
+   631  0188                     __end_of_setTimeOut:	
+   632                           
+   633                           	psect	text187
+   634  015B                     __ptext187:	
+   635 ;; =============== function _setTimeOut ends ============
+   636                           
+   637                           
+   638 ;; *************** function _vInitializeUart *****************
+   639 ;; Defined at:
+   640 ;;		line 41 in file "../src/uart.c"
+   641 ;; Parameters:    Size  Location     Type
+   642 ;;		None
+   643 ;; Auto vars:     Size  Location     Type
+   644 ;;  cBaudTemp       1    0        unsigned char 
+   645 ;; Return value:  Size  Location     Type
+   646 ;;		None               void
+   647 ;; Registers used:
+   648 ;;		wreg
+   649 ;; Tracked objects:
+   650 ;;		On entry : 17F/0
+   651 ;;		On exit  : 17F/20
+   652 ;;		Unchanged: FFE80/0
+   653 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   654 ;;      Params:         0       0       0       0       0
+   655 ;;      Locals:         0       1       0       0       0
+   656 ;;      Temps:          0       0       0       0       0
+   657 ;;      Totals:         0       1       0       0       0
+   658 ;;Total ram usage:        1 bytes
+   659 ;; Hardware stack levels used:    1
+   660 ;; Hardware stack levels required when called:    2
+   661 ;; This function calls:
+   662 ;;		Nothing
+   663 ;; This function is called by:
+   664 ;;		_main
+   665 ;; This function uses a non-reentrant model
+   666 ;;
+   667  015B                     _vInitializeUart:	
+   668                           
+   669                           ;uart.c: 46: (TRISCbits.TRISC6) = 1;
+   670                           
+   671                           ; Regs used in _vInitializeUart: [wreg]
+   672  015B  1683               	bsf	3,5	;RP0=1, select bank1
+   673  015C  1707               	bsf	7,6	;volatile
+   674                           
+   675                           ;uart.c: 47: (TRISCbits.TRISC7) = 1;
+   676  015D  1787               	bsf	7,7	;volatile
+   677                           
+   678                           ;uart.c: 56: {
+   679                           ;uart.c: 57: BRGH = 0;
+   680                           
+   681                           ;uart.c: 55: else if( cBaudTemp == ( 2 ) )
+   682  015E  1118               	bcf	24,2
+   683                           
+   684                           ;uart.c: 58: BRG16 = 1;
+   685  015F  1703               	bsf	3,6	;RP1=1, select bank3
+   686  0160  3033               	movlw	51
+   687  0161  1587               	bsf	7,3
+   688                           
+   689                           ;uart.c: 59: SPBRG = 51;
+   690  0162  1303               	bcf	3,6	;RP1=0, select bank1
+   691  0163  0099               	movwf	25	;volatile
+   692                           
+   693                           ;uart.c: 72: }
+   694                           ;uart.c: 74: SYNC = 0;
+   695                           
+   696                           ;uart.c: 60: }
+   697  0164  1218               	bcf	24,4
+   698                           
+   699                           ;uart.c: 75: SPEN = 1;
+   700  0165  1283               	bcf	3,5	;RP0=0, select bank0
+   701  0166  1798               	bsf	24,7
+   702                           
+   703                           ;uart.c: 76: CREN = 1;
+   704  0167  1618               	bsf	24,4
+   705                           
+   706                           ;uart.c: 77: TXEN = 1;
+   707  0168  1683               	bsf	3,5	;RP0=1, select bank1
+   708  0169  1698               	bsf	24,5
+   709                           
+   710                           ;uart.c: 78: TX9 = 0;
+   711  016A  1318               	bcf	24,6
+   712                           
+   713                           ;uart.c: 79: RX9 = 0;
+   714  016B  1283               	bcf	3,5	;RP0=0, select bank0
+   715  016C  1318               	bcf	24,6
+   716                           
+   717                           ;uart.c: 80: ADDEN = 0;
+   718  016D  1198               	bcf	24,3
+   719                           
+   720                           ;uart.c: 81: RCIE = 1;
+   721  016E  1683               	bsf	3,5	;RP0=1, select bank1
+   722  016F  168C               	bsf	12,5
+   723                           
+   724                           ;uart.c: 82: TXIE = 0;
+   725  0170  120C               	bcf	12,4
+   726  0171  0008               	return
+   727  0172                     __end_of_vInitializeUart:	
+   728                           
+   729                           	psect	text188
+   730  012E                     __ptext188:	
+   731 ;; =============== function _vInitializeUart ends ============
+   732                           
+   733                           
+   734 ;; *************** function _vInitializeBoard *****************
+   735 ;; Defined at:
+   736 ;;		line 253 in file "../src/main.c"
+   737 ;; Parameters:    Size  Location     Type
+   738 ;;		None
+   739 ;; Auto vars:     Size  Location     Type
+   740 ;;		None
+   741 ;; Return value:  Size  Location     Type
+   742 ;;		None               void
+   743 ;; Registers used:
+   744 ;;		wreg, status,2, status,0
+   745 ;; Tracked objects:
+   746 ;;		On entry : 17F/0
+   747 ;;		On exit  : 17F/0
+   748 ;;		Unchanged: FFE80/0
+   749 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   750 ;;      Params:         0       0       0       0       0
+   751 ;;      Locals:         0       0       0       0       0
+   752 ;;      Temps:          0       0       0       0       0
+   753 ;;      Totals:         0       0       0       0       0
+   754 ;;Total ram usage:        0 bytes
+   755 ;; Hardware stack levels used:    1
+   756 ;; Hardware stack levels required when called:    2
+   757 ;; This function calls:
+   758 ;;		Nothing
+   759 ;; This function is called by:
+   760 ;;		_main
+   761 ;; This function uses a non-reentrant model
+   762 ;;
+   763  012E                     _vInitializeBoard:	
+   764                           
+   765                           ;main.c: 254: PORTA = 0;
+   766                           
+   767                           ; Regs used in _vInitializeBoard: [wreg+status,2+status,0]
+   768  012E  0185               	clrf	5	;volatile
+   769                           
+   770                           ;main.c: 255: PORTB = 0;
+   771  012F  0186               	clrf	6	;volatile
+   772                           
+   773                           ;main.c: 256: PORTC = 0;
+   774  0130  0187               	clrf	7	;volatile
+   775                           
+   776                           ;main.c: 257: PORTD = 0;
+   777  0131  0188               	clrf	8	;volatile
+   778                           
+   779                           ;main.c: 258: PORTE = 0;
+   780  0132  0189               	clrf	9	;volatile
+   781                           
+   782                           ;main.c: 261: CM1CON0 = 0;
+   783  0133  1703               	bsf	3,6	;RP1=1, select bank2
+   784  0134  0187               	clrf	7	;volatile
+   785                           
+   786                           ;main.c: 262: CM2CON0 = 0;
+   787  0135  0188               	clrf	8	;volatile
+   788                           
+   789                           ;main.c: 263: OSCCON = 0b01110101;
+   790  0136  3075               	movlw	117
+   791  0137  1683               	bsf	3,5	;RP0=1, select bank1
+   792  0138  1303               	bcf	3,6	;RP1=0, select bank1
+   793  0139  008F               	movwf	15	;volatile
+   794                           
+   795                           ;main.c: 265: C1ON = 0;
+   796  013A  1283               	bcf	3,5	;RP0=0, select bank2
+   797  013B  1703               	bsf	3,6	;RP1=1, select bank2
+   798  013C  3017               	movlw	23
+   799  013D  1387               	bcf	7,7
+   800                           
+   801                           ;main.c: 266: C2ON = 0;
+   802  013E  1388               	bcf	8,7
+   803                           
+   804                           ;main.c: 268: WDTCON = 0b00010111;
+   805  013F  0085               	movwf	5	;volatile
+   806                           
+   807                           ;main.c: 269: OPTION_REG = 0b10000111;
+   808  0140  3087               	movlw	135
+   809  0141  1683               	bsf	3,5	;RP0=1, select bank1
+   810  0142  1303               	bcf	3,6	;RP1=0, select bank1
+   811  0143  0081               	movwf	1	;volatile
+   812                           
+   813                           ;main.c: 271: ANSELH = 0;
+   814  0144  1703               	bsf	3,6	;RP1=1, select bank3
+   815  0145  0189               	clrf	9	;volatile
+   816                           
+   817                           ;main.c: 272: ANSEL = 0;
+   818  0146  0188               	clrf	8	;volatile
+   819                           
+   820                           ;main.c: 274: T0IF = 0;
+   821  0147  110B               	bcf	11,2
+   822                           
+   823                           ;main.c: 275: T0IE = 1;
+   824  0148  168B               	bsf	11,5
+   825                           
+   826                           ;main.c: 277: TRISA = 0b00000000;
+   827  0149  1303               	bcf	3,6	;RP1=0, select bank1
+   828  014A  0185               	clrf	5	;volatile
+   829                           
+   830                           ;main.c: 278: TRISB = 0b00001111;
+   831  014B  300F               	movlw	15
+   832  014C  0086               	movwf	6	;volatile
+   833                           
+   834                           ;main.c: 279: TRISC = 0b11000100;
+   835  014D  30C4               	movlw	196
+   836  014E  0087               	movwf	7	;volatile
+   837                           
+   838                           ;main.c: 280: TRISD = 0b00000000;
+   839  014F  0188               	clrf	8	;volatile
+   840                           
+   841                           ;main.c: 281: TRISE = 0b00000000;
+   842  0150  0189               	clrf	9	;volatile
+   843                           
+   844                           ;main.c: 283: IOCB = 0b00001111;
+   845  0151  300F               	movlw	15
+   846  0152  0096               	movwf	22	;volatile
+   847                           
+   848                           ;main.c: 284: PORTB;
+   849  0153  1283               	bcf	3,5	;RP0=0, select bank0
+   850  0154  0806               	movf	6,w	;volatile
+   851                           
+   852                           ;main.c: 285: RBIF = 0;
+   853  0155  100B               	bcf	11,0
+   854                           
+   855                           ;main.c: 286: RBIE = 1;
+   856  0156  158B               	bsf	11,3
+   857                           
+   858                           ;main.c: 288: doorStates = (PORTB & 0x0F);
+   859  0157  00A4               	movwf	_doorStates	;volatile
+   860  0158  300F               	movlw	15
+   861  0159  05A4               	andwf	_doorStates,f	;volatile
+   862  015A  0008               	return
+   863  015B                     __end_of_vInitializeBoard:	
+   864                           
+   865                           	psect	text189
+   866  000F                     __ptext189:	
+   867 ;; =============== function _vInitializeBoard ends ============
+   868                           
+   869                           
+   870 ;; *************** function _erdem *****************
+   871 ;; Defined at:
+   872 ;;		line 161 in file "../src/main.c"
+   873 ;; Parameters:    Size  Location     Type
+   874 ;;		None
+   875 ;; Auto vars:     Size  Location     Type
+   876 ;;  i               2    0        unsigned int 
+   877 ;;  temp            1    6[COMMON] unsigned char 
+   878 ;; Return value:  Size  Location     Type
+   879 ;;		None               void
+   880 ;; Registers used:
+   881 ;;		wreg, status,2, status,0, pclath, cstack
+   882 ;; Tracked objects:
+   883 ;;		On entry : 0/0
+   884 ;;		On exit  : 0/0
+   885 ;;		Unchanged: 0/0
+   886 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   887 ;;      Params:         0       0       0       0       0
+   888 ;;      Locals:         1       0       0       0       0
+   889 ;;      Temps:          4       0       0       0       0
+   890 ;;      Totals:         5       0       0       0       0
+   891 ;;Total ram usage:        5 bytes
+   892 ;; Hardware stack levels used:    1
+   893 ;; Hardware stack levels required when called:    1
+   894 ;; This function calls:
+   895 ;;		_vDelay
+   896 ;;		_vCheckError
+   897 ;;		i1_putch
+   898 ;; This function is called by:
+   899 ;;		Interrupt level 1
+   900 ;; This function uses a non-reentrant model
+   901 ;;
+   902  000F                     _erdem:	
+   903                           
+   904                           ;main.c: 162: unsigned char temp;
+   905                           ;main.c: 163: unsigned int i;
+   906                           ;main.c: 165: if(T0IE && T0IF)
+   907  000F  1A8B               	btfsc	11,5
+   908  0010  1D0B               	btfss	11,2
+   909  0011  2823               	goto	i1l1073
+   910                           
+   911                           ;main.c: 166: {
+   912                           ;main.c: 167: ++timeOutTimer;
+   913  0012  0AFA               	incf	_timeOutTimer,f	;volatile
+   914                           
+   915                           ;main.c: 168: if((timeOutTimer == timeOutCounter) && timeOutFlag)
+   916  0013  087A               	movf	_timeOutTimer,w	;volatile
+   917  0014  0679               	xorwf	_timeOutCounter,w	;volatile
+   918  0015  1903               	btfsc	3,2
+   919  0016  1C7B               	btfss	_timeOutFlag/(0+8),_timeOutFlag& (0+7)
+   920  0017  2821               	goto	i1l1074
+   921                           
+   922                           ;main.c: 169: {
+   923                           ;main.c: 170: timeOutTimer = 0;
+   924  0018  01FA               	clrf	_timeOutTimer	;volatile
+   925                           
+   926                           ;main.c: 172: if(uartState == 2)
+   927  0019  1283               	bcf	3,5	;RP0=0, select bank0
+   928  001A  1303               	bcf	3,6	;RP1=0, select bank0
+   929  001B  0821               	movf	_uartState,w	;volatile
+   930  001C  3A02               	xorlw	2
+   931  001D  1D03               	skipz
+   932  001E  2821               	goto	i1l1074
+   933                           
+   934                           ;main.c: 173: {
+   935                           ;main.c: 174: uartState = 1;
+   936  001F  01A1               	clrf	_uartState	;volatile
+   937  0020  0AA1               	incf	_uartState,f	;volatile
+   938  0021                     i1l1074:	
+   939                           
+   940                           ;main.c: 175: }
+   941                           ;main.c: 177: }
+   942                           ;main.c: 178: T0IF = 0;
+   943  0021  110B               	bcf	11,2
+   944                           
+   945                           ;main.c: 179: return;
+   946  0022  289E               	goto	i1l1076
+   947  0023                     i1l1073:	
+   948                           
+   949                           ;main.c: 180: }
+   950                           ;main.c: 181: if(RBIE && RBIF)
+   951  0023  198B               	btfsc	11,3
+   952  0024  1C0B               	btfss	11,0
+   953  0025  2875               	goto	i1l1077
+   954                           
+   955                           ;main.c: 182: {
+   956                           ;main.c: 183: vDelay();
+   957  0026  20A5  120A  118A   	fcall	_vDelay
+   958                           
+   959                           ;main.c: 184: if(doorStates != (PORTB & 0x0F))
+   960  0029  20C4  120A  118A   	fcall	PL2	;call to abstracted procedure
+   961  002C  1903               	skipnz
+   962  002D  286F               	goto	i1l3845
+   963                           
+   964                           ;main.c: 185: {
+   965                           ;main.c: 186: _delay((unsigned long)((40)*(8000000/4000.0)));
+   966  002E  3068               	movlw	104
+   967  002F  00F3               	movwf	??_erdem+1
+   968  0030  30E4               	movlw	228
+   969  0031  00F2               	movwf	??_erdem
+   970  0032                     u56_27:	
+   971  0032  0BF2               	decfsz	??_erdem,f
+   972  0033  2832               	goto	u56_27
+   973  0034  0BF3               	decfsz	??_erdem+1,f
+   974  0035  2832               	goto	u56_27
+   975  0036  0064               	clrwdt
+   976                           
+   977                           ;main.c: 187: _delay((unsigned long)((40)*(8000000/4000.0)));
+   978  0037  3068               	movlw	104
+   979  0038  00F3               	movwf	??_erdem+1
+   980  0039  30E4               	movlw	228
+   981  003A  00F2               	movwf	??_erdem
+   982  003B                     u57_27:	
+   983  003B  0BF2               	decfsz	??_erdem,f
+   984  003C  283B               	goto	u57_27
+   985  003D  0BF3               	decfsz	??_erdem+1,f
+   986  003E  283B               	goto	u57_27
+   987  003F  0064               	clrwdt
+   988                           
+   989                           ;main.c: 188: _delay((unsigned long)((40)*(8000000/4000.0)));
+   990  0040  3068               	movlw	104
+   991  0041  00F3               	movwf	??_erdem+1
+   992  0042  30E4               	movlw	228
+   993  0043  00F2               	movwf	??_erdem
+   994  0044                     u58_27:	
+   995  0044  0BF2               	decfsz	??_erdem,f
+   996  0045  2844               	goto	u58_27
+   997  0046  0BF3               	decfsz	??_erdem+1,f
+   998  0047  2844               	goto	u58_27
+   999  0048  0064               	clrwdt
+  1000                           
+  1001                           ;main.c: 189: _delay((unsigned long)((40)*(8000000/4000.0)));
+  1002  0049  3068               	movlw	104
+  1003  004A  00F3               	movwf	??_erdem+1
+  1004  004B  30E4               	movlw	228
+  1005  004C  00F2               	movwf	??_erdem
+  1006  004D                     u59_27:	
+  1007  004D  0BF2               	decfsz	??_erdem,f
+  1008  004E  284D               	goto	u59_27
+  1009  004F  0BF3               	decfsz	??_erdem+1,f
+  1010  0050  284D               	goto	u59_27
+  1011  0051  0064               	clrwdt
+  1012                           
+  1013                           ;main.c: 190: _delay((unsigned long)((40)*(8000000/4000.0)));
+  1014  0052  3068               	movlw	104
+  1015  0053  00F3               	movwf	??_erdem+1
+  1016  0054  30E4               	movlw	228
+  1017  0055  00F2               	movwf	??_erdem
+  1018  0056                     u60_27:	
+  1019  0056  0BF2               	decfsz	??_erdem,f
+  1020  0057  2856               	goto	u60_27
+  1021  0058  0BF3               	decfsz	??_erdem+1,f
+  1022  0059  2856               	goto	u60_27
+  1023  005A  0064               	clrwdt
+  1024                           
+  1025                           ;main.c: 191: _delay((unsigned long)((40)*(8000000/4000.0)));
+  1026  005B  3068               	movlw	104
+  1027  005C  00F3               	movwf	??_erdem+1
+  1028  005D  30E4               	movlw	228
+  1029  005E  00F2               	movwf	??_erdem
+  1030  005F                     u61_27:	
+  1031  005F  0BF2               	decfsz	??_erdem,f
+  1032  0060  285F               	goto	u61_27
+  1033  0061  0BF3               	decfsz	??_erdem+1,f
+  1034  0062  285F               	goto	u61_27
+  1035  0063  0064               	clrwdt
+  1036                           
+  1037                           ;main.c: 193: if(doorStates != (PORTB & 0x0F))
+  1038  0064  20C4  120A  118A   	fcall	PL2	;call to abstracted procedure
+  1039  0067  1903               	skipnz
+  1040  0068  286F               	goto	i1l3845
+  1041                           
+  1042                           ;main.c: 194: {
+  1043                           ;main.c: 195: doorStatesChanged = 1;
+  1044  0069  01A0               	clrf	_doorStatesChanged	;volatile
+  1045  006A  0AA0               	incf	_doorStatesChanged,f	;volatile
+  1046                           
+  1047                           ;main.c: 196: doorStates = (PORTB & 0x0F);
+  1048  006B  0806               	movf	6,w
+  1049  006C  00A4               	movwf	_doorStates	;volatile
+  1050  006D  300F               	movlw	15
+  1051  006E  05A4               	andwf	_doorStates,f	;volatile
+  1052  006F                     i1l3845:	
+  1053                           
+  1054                           ;main.c: 197: }
+  1055                           ;main.c: 198: }
+  1056                           ;main.c: 199: PORTB;
+  1057  006F  0806               	movf	6,w	;volatile
+  1058                           
+  1059                           ;main.c: 200: RBIF = 0;
+  1060  0070  100B               	bcf	11,0
+  1061                           
+  1062                           ;main.c: 201: vDelay();
+  1063  0071  20A5  120A  118A   	fcall	_vDelay
+  1064  0074  289E               	goto	i1l1076
+  1065  0075                     i1l1077:	
+  1066                           
+  1067                           ;main.c: 203: }
+  1068                           ;main.c: 205: if(RCIE && RCIF)
+  1069  0075  1683               	bsf	3,5	;RP0=1, select bank1
+  1070  0076  1303               	bcf	3,6	;RP1=0, select bank1
+  1071  0077  1E8C               	btfss	12,5
+  1072  0078  289E               	goto	i1l1076
+  1073  0079  1283               	bcf	3,5	;RP0=0, select bank0
+  1074  007A  1E8C               	btfss	12,5
+  1075  007B  289E               	goto	i1l1076
+  1076                           
+  1077                           ;main.c: 206: {
+  1078                           ;main.c: 207: if (OERR)
+  1079  007C  1C98               	btfss	24,1
+  1080  007D  2880               	goto	i1l1081
+  1081                           
+  1082                           ;main.c: 208: {
+  1083                           ;main.c: 209: CREN=0;
+  1084  007E  1218               	bcf	24,4
+  1085                           
+  1086                           ;main.c: 210: CREN=1;
+  1087  007F  1618               	bsf	24,4
+  1088  0080                     i1l1081:	
+  1089                           
+  1090                           ;main.c: 211: }
+  1091                           ;main.c: 212: if(FERR)
+  1092  0080  1918               	btfsc	24,2
+  1093  0081  081A               	movf	26,w	;volatile
+  1094  0082                     i1l3863:	
+  1095  0082  1A8C               	btfsc	12,5
+  1096  0083  2888               	goto	i1l3865
+  1097                           
+  1098                           ;main.c: 217: {
+  1099                           ;main.c: 218: vCheckError();
+  1100  0084  20B3  120A  118A   	fcall	_vCheckError
+  1101  0087  2882               	goto	i1l3863
+  1102  0088                     i1l3865:	
+  1103                           
+  1104                           ;main.c: 219: }
+  1105                           ;main.c: 221: temp = RCREG;
+  1106  0088  081A               	movf	26,w	;volatile
+  1107  0089  00F6               	movwf	erdem@temp
+  1108                           
+  1109                           ;main.c: 222: if(temp == 'A')
+  1110  008A  3A41               	xorlw	65
+  1111  008B  1D03               	skipz
+  1112  008C  288F               	goto	i1l3869
+  1113                           
+  1114                           ;main.c: 223: {
+  1115                           ;main.c: 224: uartState = 0;
+  1116  008D  01A1               	clrf	_uartState	;volatile
+  1117                           
+  1118                           ;main.c: 225: }
+  1119  008E  289E               	goto	i1l1076
+  1120  008F                     i1l3869:	
+  1121                           
+  1122                           ;main.c: 226: else if(temp == 'P')
+  1123  008F  0876               	movf	erdem@temp,w
+  1124  0090  3A50               	xorlw	80
+  1125  0091  1D03               	skipz
+  1126  0092  289E               	goto	i1l1076
+  1127                           
+  1128                           ;main.c: 227: {
+  1129                           ;main.c: 228: _delay((unsigned long)((5)*(8000000/4000.0)));
+  1130  0093  300D               	movlw	13
+  1131  0094  00F3               	movwf	??_erdem+1
+  1132  0095  30FB               	movlw	251
+  1133  0096  00F2               	movwf	??_erdem
+  1134  0097                     u62_27:	
+  1135  0097  0BF2               	decfsz	??_erdem,f
+  1136  0098  2897               	goto	u62_27
+  1137  0099  0BF3               	decfsz	??_erdem+1,f
+  1138  009A  2897               	goto	u62_27
+  1139  009B  289C               	nop2
+  1140                           
+  1141                           ;main.c: 229: putch('H');
+  1142  009C  3048               	movlw	72
+  1143  009D  20BC               	fcall	i1_putch
+  1144  009E                     i1l1076:	
+  1145  009E  0875               	movf	??_erdem+3,w
+  1146  009F  008A               	movwf	10
+  1147  00A0  0E74               	swapf	(??_erdem+2)^(0+-128),w
+  1148  00A1  0083               	movwf	3
+  1149  00A2  0EFE               	swapf	126,f
+  1150  00A3  0E7E               	swapf	126,w
+  1151  00A4  0009               	retfie
+  1152  00A5                     __end_of_erdem:	
+  1153  00A5                     __ptext190:	
+  1154 ;; =============== function _erdem ends ============
+  1155                           
+  1156                           
+  1157 ;; *************** function _vDelay *****************
+  1158 ;; Defined at:
+  1159 ;;		line 303 in file "../src/main.c"
+  1160 ;; Parameters:    Size  Location     Type
+  1161 ;;		None
+  1162 ;; Auto vars:     Size  Location     Type
+  1163 ;;  i               2    0[COMMON] unsigned int 
+  1164 ;; Return value:  Size  Location     Type
+  1165 ;;		None               void
+  1166 ;; Registers used:
+  1167 ;;		wreg, status,2, status,0
+  1168 ;; Tracked objects:
+  1169 ;;		On entry : 0/0
+  1170 ;;		On exit  : 0/0
+  1171 ;;		Unchanged: 0/0
+  1172 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+  1173 ;;      Params:         0       0       0       0       0
+  1174 ;;      Locals:         2       0       0       0       0
+  1175 ;;      Temps:          0       0       0       0       0
+  1176 ;;      Totals:         2       0       0       0       0
+  1177 ;;Total ram usage:        2 bytes
+  1178 ;; Hardware stack levels used:    1
+  1179 ;; This function calls:
+  1180 ;;		Nothing
+  1181 ;; This function is called by:
+  1182 ;;		_erdem
+  1183 ;; This function uses a non-reentrant model
+  1184 ;;
+  1185  00A5                     _vDelay:	
+  1186                           
+  1187                           ;main.c: 304: unsigned int i;
+  1188                           ;main.c: 305: for( i = 0; i < 5000; i++ )
+  1189                           
+  1190                           ; Regs used in _vDelay: [wreg+status,2+status,0]
+  1191  00A5  01F0               	clrf	vDelay@i
+  1192  00A6  01F1               	clrf	vDelay@i+1
+  1193  00A7                     i1l1094:	
+  1194                           
+  1195                           ;main.c: 306: {
+  1196                           ;main.c: 307: _nop();
+  1197  00A7  0000               	nop
+  1198  00A8  0AF0               	incf	vDelay@i,f
+  1199  00A9  1903               	skipnz
+  1200  00AA  0AF1               	incf	vDelay@i+1,f
+  1201  00AB  3013               	movlw	19
+  1202  00AC  0271               	subwf	vDelay@i+1,w
+  1203  00AD  3088               	movlw	136
+  1204  00AE  1903               	skipnz
+  1205  00AF  0270               	subwf	vDelay@i,w
+  1206  00B0  1803               	btfsc	3,0
+  1207  00B1  0008               	return
+  1208  00B2  28A7               	goto	i1l1094
+  1209  00B3                     __end_of_vDelay:	
+  1210  00B3                     __ptext192:	
+  1211 ;; =============== function i1_putch ends ============
+  1212                           
+  1213                           
+  1214 ;; *************** function _vCheckError *****************
+  1215 ;; Defined at:
+  1216 ;;		line 97 in file "../src/uart.c"
+  1217 ;; Parameters:    Size  Location     Type
+  1218 ;;		None
+  1219 ;; Auto vars:     Size  Location     Type
+  1220 ;;  a               1    0        unsigned char 
+  1221 ;; Return value:  Size  Location     Type
+  1222 ;;		None               void
+  1223 ;; Registers used:
+  1224 ;;		wreg
+  1225 ;; Tracked objects:
+  1226 ;;		On entry : 0/0
+  1227 ;;		On exit  : 60/0
+  1228 ;;		Unchanged: FFF9F/0
+  1229 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+  1230 ;;      Params:         0       0       0       0       0
+  1231 ;;      Locals:         0       0       0       0       0
+  1232 ;;      Temps:          0       0       0       0       0
+  1233 ;;      Totals:         0       0       0       0       0
+  1234 ;;Total ram usage:        0 bytes
+  1235 ;; Hardware stack levels used:    1
+  1236 ;; This function calls:
+  1237 ;;		Nothing
+  1238 ;; This function is called by:
+  1239 ;;		_erdem
+  1240 ;; This function uses a non-reentrant model
+  1241 ;;
+  1242  00B3                     _vCheckError:	
+  1243                           
+  1244                           ;uart.c: 99: if ( OERR )
+  1245                           
+  1246                           ; Regs used in _vCheckError: [wreg]
+  1247  00B3  1283               	bcf	3,5	;RP0=0, select bank0
+  1248  00B4  1303               	bcf	3,6	;RP1=0, select bank0
+  1249  00B5  1C98               	btfss	24,1
+  1250  00B6  28B9               	goto	i1l2134
+  1251                           
+  1252                           ;uart.c: 100: {
+  1253                           ;uart.c: 101: CREN =0;
+  1254  00B7  1218               	bcf	24,4
+  1255                           
+  1256                           ;uart.c: 102: CREN = 1;
+  1257  00B8  1618               	bsf	24,4
+  1258  00B9                     i1l2134:	
+  1259                           
+  1260                           ;uart.c: 103: }
+  1261                           ;uart.c: 104: if( FERR )
+  1262  00B9  1918               	btfsc	24,2
+  1263                           
+  1264                           ;uart.c: 105: {
+  1265                           ;uart.c: 106: a = RCREG;
+  1266  00BA  081A               	movf	26,w	;volatile
+  1267  00BB  0008               	return
+  1268  00BC                     __end_of_vCheckError:	
+  1269  00BC                     __ptext191:	
+  1270 ;; =============== function _vDelay ends ============
+  1271                           
+  1272                           
+  1273 ;; *************** function i1_putch *****************
+  1274 ;; Defined at:
+  1275 ;;		line 122 in file "../src/uart.c"
+  1276 ;; Parameters:    Size  Location     Type
+  1277 ;;  putch           1    wreg     unsigned char 
+  1278 ;; Auto vars:     Size  Location     Type
+  1279 ;;  putch           1    0[COMMON] unsigned char 
+  1280 ;; Return value:  Size  Location     Type
+  1281 ;;		None               void
+  1282 ;; Registers used:
+  1283 ;;		wreg
+  1284 ;; Tracked objects:
+  1285 ;;		On entry : 0/0
+  1286 ;;		On exit  : 60/0
+  1287 ;;		Unchanged: FFF9F/0
+  1288 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+  1289 ;;      Params:         0       0       0       0       0
+  1290 ;;      Locals:         1       0       0       0       0
+  1291 ;;      Temps:          0       0       0       0       0
+  1292 ;;      Totals:         1       0       0       0       0
+  1293 ;;Total ram usage:        1 bytes
+  1294 ;; Hardware stack levels used:    1
+  1295 ;; This function calls:
+  1296 ;;		Nothing
+  1297 ;; This function is called by:
+  1298 ;;		_erdem
+  1299 ;; This function uses a non-reentrant model
+  1300 ;;
+  1301  00BC                     i1_putch:	
+  1302                           
+  1303                           ; Regs used in i1_putch: [wreg]
+  1304                           ;i1putch@c stored from wreg
+  1305  00BC  00F0               	movwf	i1putch@c
+  1306  00BD                     i1l2139:	
+  1307                           ;uart.c: 123: while( !TXIF )
+  1308                           
+  1309  00BD  1283               	bcf	3,5	;RP0=0, select bank0
+  1310  00BE  1303               	bcf	3,6	;RP1=0, select bank0
+  1311  00BF  1E0C               	btfss	12,4
+  1312  00C0  28BD               	goto	i1l2139
+  1313                           
+  1314                           ;uart.c: 125: TXREG = c;
+  1315  00C1  0870               	movf	i1putch@c,w
+  1316  00C2  0099               	movwf	25	;volatile
+  1317  00C3  0008               	return
+  1318  00C4                     __end_ofi1_putch:	
+  1319  00C4                     PL2:	
+  1320  00C4  1283               	bcf	3,5	;RP0=0, select bank0
+  1321  00C5  1303               	bcf	3,6	;RP1=0, select bank0
+  1322  00C6  0806               	movf	6,w
+  1323  00C7  390F               	andlw	15
+  1324  00C8  0624               	xorwf	_doorStates,w	;volatile
+  1325  00C9  0008               	return
+  1326                           
+  1327                           	psect	intentry
+  1328  0004                     __pintentry:	
+  1329                           ; Regs used in _erdem: [wreg+status,2+status,0+pclath+cstack]
+  1330                           
+  1331  0004                     interrupt_function:	
+  1332  007E                     saved_w	set	btemp
+  1333  0004  00FE               	movwf	btemp
+  1334  0005  0E03               	swapf	3,w
+  1335  0006  00F4               	movwf	??_erdem+2
+  1336  0007  080A               	movf	10,w
+  1337  0008  00F5               	movwf	??_erdem+3
+  1338  0009  120A  118A  280F   	ljmp	_erdem
+  1339                           
+  1340                           	psect	text193
+  1341  0000                     __ptext193:	
+  1342 ;; =============== function _vCheckError ends ============
+  1343                           
+  1344  007E                     btemp	set	126	;btemp
+  1345  007E                     wtemp0	set	126
+
+
+HI-TECH Software PICC Macro Assembler V9.83 build 10920 
+Symbol Table                                                                                   Tue Mar 15 14:12:13 2016
+
+                      _GIE 005F                        _RX9 00C6                        _TX9 04C6  
+          _vInitializeUart 015B                       l1091 0000                       l2131 0000  
+                     l2142 0000                       l1099 0000                       l2139 017E  
+                     _C1ON 083F                       _C2ON 0847                       l3801 0000  
+                     l3731 0000                       l3723 0000                       l3803 0000  
+                     l3741 0000                       l3733 0000                       l3725 0000  
+                     l3805 0000                       l3901 0000                       l3751 0000  
+                     l3743 0000                       l3735 0000                       l3727 0000  
+                     l3807 0000                       l3911 0000                       l3903 0000  
+                     l3753 0000                       l3745 0000                       l3737 0000  
+                     l3729 0000                       l3809 0000                       l3921 0000  
+                     l3913 0000                       l3905 0000                       l3747 0000  
+                     l3739 0000                       l3755 0000                       l3923 0000  
+                     l3915 0000                       l3907 00D9                       l3749 0000  
+                     l3765 0000                       l3757 0000                       l3933 0100  
+                     l3917 00E3                       l3909 0000                       l3791 0000  
+                     l3767 0000                       l3759 0000                       l3927 00F2  
+                     l3793 0000                       l3785 0000                       l3769 0000  
+                     l3945 0127                       l3795 0000                       l3787 0000  
+                     l3939 0110                       l3797 0000                       l3789 0000  
+                     l3799 0000                       l3897 0000                       l3899 0000  
+                     _BRGH 04C2                       _T0IE 005D                       _T0IF 005A  
+                     _CREN 00C4                       _FERR 00C2                       _IOCB 0096  
+                     _PEIE 005E                       _RBIE 005B                       _RBIF 0058  
+                     _RCIE 0465                       _RCIF 0065                       _OERR 00C1  
+             _ackComplated 0077                       _SPEN 00C7                       _TXIE 0464  
+                     _TXEN 04C5                       _TXIF 0064                       _SYNC 04C4  
+         _vInitializeBoard 012E                       _main 00CA                       btemp 007E  
+                     start 000C            __end_ofi1_putch 00C4                      _ADDEN 00C3  
+                    ?_main 0070                      _BRG16 0C3B                      _ANSEL 0188  
+                    _RCREG 001A                      _SPBRG 0099                      _PORTA 0005  
+                    _PORTB 0006                      _PORTC 0007                      _PORTD 0008  
+                    _PORTE 0009                      u60_27 0056                      u61_27 005F  
+                    u62_27 0097                      u56_27 0032                      _TRISA 0085  
+                    _TRISB 0086                      _TRISC 0087                      _TRISD 0088  
+                    u57_27 003B                      _TRISE 0089                      u58_27 0044  
+                    u59_27 004D                      _TXREG 0019                      _erdem 000F  
+                    _putch 017D             __pbitbssCOMMON 03D8                      pclath 000A  
+     __size_of_vCheckError 0009                      status 0003                      wtemp0 007E  
+             __end_of_main 012E    __end_of_vInitializeUart 0172                     ??_main 0023  
+                   ?_erdem 0070                     ?_putch 0070                     _ANSELH 0189  
+                   i1l1081 0080                     i1l1073 0023                     i1l1074 0021  
+                   i1l1076 009E                     i1l1077 0075                     i1l2134 00B9  
+                   i1l2142 0000                     i1l1094 00A7                     i1l1096 0000  
+                   i1l2139 00BD                     i1l3813 0000                     i1l3841 0000  
+                   i1l3833 0000                     i1l3825 0000                     i1l3843 0000  
+                   i1l3819 0000                     i1l3837 0000                     i1l3845 006F  
+                   i1l3863 0082                     i1l3847 0000                     i1l3873 0000  
+                   i1l3865 0088                     i1l3849 0000                     i1l3883 0000  
+                   i1l3893 0000                     i1l3885 0000                     i1l3877 0000  
+                   i1l3869 008F                     i1l3887 0000                     _OSCCON 008F  
+                ??i1_putch 0070                     _WDTCON 0105                     _vDelay 00A5  
+                   saved_w 007E                     putch@c 0022             __pcstackCOMMON 0070  
+            __end_of_erdem 00A5           ?_vInitializeUart 0070              __end_of_putch 0183  
+ __end_of_vInitializeBoard 015B                    ??_erdem 0072                    ??_putch 0022  
+               __pbssBANK0 0020                 __pmaintext 00CA                    ?_vDelay 0070  
+               __pintentry 0004                    _CM1CON0 0107                    _CM2CON0 0108  
+               _doorStates 0024                    i1_putch 00BC          setTimeOut@timeOut 0022  
+          __size_of_vDelay 000E                    vDelay@i 0070              ??_vCheckError 0070  
+     end_of_initialization 0179                 _setTimeOut 0183                  _PORTDbits 0008  
+                _TRISCbits 0087        __end_of_vCheckError 00BC             _timeOutCounter 0079  
+           __end_of_vDelay 00B3          ?_vInitializeBoard 0070         ??_vInitializeBoard 0022  
+      start_initialization 0172                ?_setTimeOut 0070                   ??_vDelay 0070  
+              __pbssCOMMON 0077   __size_of_vInitializeUart 0017              __pcstackBANK0 0022  
+              _vCheckError 00B3                   ?i1_putch 0070                  __pnvBANK0 0024  
+                __ptext190 00A5                  __ptext191 00BC                  __ptext192 00B3  
+                __ptext193 0000                  __ptext185 017D                  __ptext186 0183  
+                __ptext187 015B                  __ptext188 012E                  __ptext189 000F  
+      __size_of_setTimeOut 0005             __size_of_erdem 0096                  _tick250ms 0078  
+           __size_of_putch 0006          interrupt_function 0004                  _uartState 0021  
+                erdem@temp 0076          ??_vInitializeUart 0022                   i1putch@c 0070  
+         __size_ofi1_putch 0008          _doorStatesChanged 0020  __size_of_vInitializeBoard 002D  
+             ??_setTimeOut 0022              __size_of_main 0064               _timeOutTimer 007A  
+       __end_of_setTimeOut 0188               ?_vCheckError 0070                   intlevel1 0000  
+              _timeOutFlag 03D8                 _OPTION_REG 0081  
